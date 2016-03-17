@@ -34,10 +34,13 @@ class UploadServiceTestCase(unittest.TestCase):
     def test_upload_complete(self, mock_rm):
 	# Build dependencies
 	removal_service = RemovalService()
-	reference = UploadService(removal_service)
+	ref = UploadService(removal_service)
 
 	# Call upload_complete, which should call rm
+	ref.upload_complete("My uploaded file")
+
+	# Check that it called the rm method of any RemovalService
 	mock_rm.assert_called_with("My uploaded file")
 
-	# Check that rm method was called
+	# Check that rm method was called for _our_ removal_service
 	removal_service.rm.assert_called_with("My uploaded file")
