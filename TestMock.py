@@ -4,6 +4,7 @@ from rmmodule import rm
 
 import mock
 import unittest
+import pytest
 
 class RmTestCase(unittest.TestCase):
 
