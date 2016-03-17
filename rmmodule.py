@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 import os
+import os.path
 
 def rm(filename):
-    os.remove(filename)
+    if os.path.isfile(filename):
+	os.remove(filename)
