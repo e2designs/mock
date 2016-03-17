@@ -12,7 +12,7 @@ class RemovalService(object):
 	    os.remove(filename)
 
 
-class UploadService(objectt):
+class UploadService(object):
 
     def __init__(self, removal_service):
 	self.removal_service = removal_service
