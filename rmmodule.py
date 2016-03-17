@@ -18,4 +18,4 @@ class UploadService(object):
 	self.removal_service = removal_service
 
     def upload_complete(self, filename):
-	self.removal_service.rm(filname)
+	self.removal_service.rm(filename)
