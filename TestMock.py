@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
-from rmmodule import rm
+from rmmodule import RemovalService as RS
 
 import mock
 import unittest
@@ -11,13 +11,15 @@ class RemovalServiceTestCase(unittest.TestCase):
     @mock.patch('rmmodule.os.path')
     @mock.patch('rmmodule.os')
     def test_rm(self, mock_os, mock_path):
+	print mock_os
+	print mock_path
 	# Instantiate the service
-	reference = RemovalService()
+	ref = RS()
 
 	# Set up the mock
 	mock_path.isfile.return_value = False
 
-	reference.rm("any path")
+	ref.rm('anypath')
 	
 	# Test that the remove calls was NOT called
 	self.assertFalse(mock_os.remove.called, "Failed to not remove the file if not present.")
@@ -25,7 +27,7 @@ class RemovalServiceTestCase(unittest.TestCase):
 	# Make the file 'exist'
 	mock_path.isfile.return_value = True
 
-	reference.rm("any path")
+	ref.rm('anypath')
 
 	# Test that rm called os.remove with right parameters
-	mock_os.remove.assert_called_with("any path")
+	mock_os.remove.assert_called_with('anypath')
