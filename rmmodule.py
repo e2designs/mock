@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+""" Just a file used for mock tests"""
+
 import os
 import os.path
 
