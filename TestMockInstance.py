@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-from rmmodule import RemovalService, UploadService
+from rmmodule import RemovalService as RS
+from rmmodule import UploadService as US
 
 import mock
 import unittest
@@ -10,15 +11,15 @@ class RemovalServiceTestCase(unittest.TestCase):
     @mock.patch('rmmodule.os.path')
     @mock.patch('rmmodule.os')
     def test_rm(self, mock_os, mock_path):
-	# Instantiate the service
-	ref = RemovalService()
+	# Instantiate the service.
+	ref = RS()
 
 	# Set up the mock
 	mock_path.isfile.return_value = False
 
 	ref.rm("any path")
 
-	# Test that remove call was NOT called. 
+	# Test that the remove call was NOT called.
 	self.assertFalse(mock_os.remove.called, "Failed to not remove the file if not present.")
 
 	# Make the file 'exist'
@@ -28,19 +29,18 @@ class RemovalServiceTestCase(unittest.TestCase):
 
 	mock_os.remove.assert_called_with("any path")
 
+
 class UploadServiceTestCase(unittest.TestCase):
 
-    @mock.patch.object(RemovalService, 'rm')
+    @mock.patch.object(RS, 'rm')
     def test_upload_complete(self, mock_rm):
-	# Build dependencies
-	removal_service = RemovalService()
-	ref = UploadService(removal_service)
+	# Build the dependencies
+	mock_removal_service = mock.create_autospec(RS)
+	ref = US(mock_removal_service)
 
-	# Call upload_complete, which should call rm
-	ref.upload_complete("My uploaded file")
+	# Call upload_complete, which should, in turn call 'rm'
+	ref.upload_complete("my uploaded file")
 
-	# Check that it called the rm method of any RemovalService
-	mock_rm.assert_called_with("My uploaded file")
+	# Test that it called the rm method
+	mock_removal_service.rm.assert_called_with("my uploaded file")
 
-	# Check that rm method was called for _our_ removal_service
-	removal_service.rm.assert_called_with("My uploaded file")
